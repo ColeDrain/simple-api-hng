@@ -7,8 +7,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-
-	cors "github.com/itsjamie/gin-cors"
 )
 
 // user represents data about user.
@@ -27,17 +25,6 @@ var users = []user{
 func main() {
     router := gin.Default()
 
-	// Apply the middleware to the router (works with groups too)
-	router.Use(cors.Middleware(cors.Config{
-		Origins:        "*",
-		Methods:        "GET, PUT, POST, DELETE",
-		RequestHeaders: "Origin, Authorization, Content-Type",
-		ExposedHeaders: "",
-		MaxAge: 50 * time.Second,
-		Credentials: false,
-		ValidateHeaders: false,
-	}))
-
     router.GET("/anon", getme)
 
 	port := os.Getenv("PORT")
@@ -46,5 +33,9 @@ func main() {
 
 // getme responds with me.
 func getme(c *gin.Context) {
+	// Add CORS headers
+    c.Header("Access-Control-Allow-Origin", "*")
+    c.Header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS")
+
     c.IndentedJSON(http.StatusOK, users[0])
 }
