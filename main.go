@@ -41,7 +41,7 @@ func main() {
     router.GET("/anon", getme)
 
 	port := os.Getenv("PORT")
-    router.Run("localhost:"+port)
+    router.Run("0.0.0.0:"+port)
 }
 
 // getme responds with me.
