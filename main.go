@@ -2,12 +2,13 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"time"
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/itsjamie/gin-cors"
+	cors "github.com/itsjamie/gin-cors"
 )
 
 // user represents data about user.
@@ -39,7 +40,8 @@ func main() {
 
     router.GET("/anon", getme)
 
-    router.Run("localhost:8080")
+	port := os.Getenv("PORT")
+    router.Run("localhost:"+port)
 }
 
 // getme responds with me.
