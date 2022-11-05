@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -50,8 +49,6 @@ func main() {
 // getme responds with me.
 func getme(c *gin.Context) {
 	// Add CORS headers
-    c.Header("Access-Control-Allow-Origin", "*")
-    c.Header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS")
 
     c.IndentedJSON(http.StatusOK, users[0])
 }
@@ -76,8 +73,6 @@ func calculate(c *gin.Context) {
     case "multiplication":
         resp.Result = newOp.X * newOp.Y
     default:
-        fmt.Println(gptCalculate(newOp.Op))
-
         res, err := gptCalculate(newOp.Op)
         if err != nil {
             resp.Error = "Bad Input 🤔"
@@ -92,7 +87,7 @@ func calculate(c *gin.Context) {
 }
 
 func gptCalculate(prompt string) (int, error){
-    c := gogpt.NewClient("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")
+    c := gogpt.NewClient(os.Getenv("OPENAIKEY"))
 	ctx := context.Background()
 
 	req := gogpt.CompletionRequest{
